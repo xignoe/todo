@@ -36,7 +36,7 @@ Simply open `index.html` in your browser and begin your existential productivity
 
 ## Live Demo
 
-Experience the void at: [Your deployment URL here]
+Live demo coming soon
 
 ---
 
