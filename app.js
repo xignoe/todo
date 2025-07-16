@@ -1,0 +1,435 @@
+// Existential Todo App - A Meditation on Human Productivity
+// Simple vanilla JavaScript implementation
+
+// The Void State - Digital Soul of Existential Productivity
+const VoidState = {
+    tasks: [],
+    nextId: 1,
+    philosophicalObservations: [],
+    userPatterns: {
+        creationCount: 0,
+        completionCount: 0,
+        procrastinationEvents: 0,
+        voidGazeCount: 0
+    },
+    
+    // Void Foundation Methods
+    manifestTask(taskData) {
+        this.tasks.push(taskData);
+        this.userPatterns.creationCount++;
+        this.persistToVoid();
+    },
+    
+    transmuteTask(taskId, newState) {
+        const task = this.tasks.find(t => t.id === taskId);
+        if (task) {
+            task.state = newState;
+            if (newState === TaskStates.COMPLETED) {
+                this.userPatterns.completionCount++;
+            }
+            this.persistToVoid();
+        }
+    },
+    
+    contemplateVoid() {
+        this.userPatterns.voidGazeCount++;
+        return this.tasks.length === 0;
+    },
+    
+    persistToVoid() {
+        VoidPersistence.saveToDigitalEternity(this);
+    },
+    
+    resurrectFromVoid() {
+        const resurrected = VoidPersistence.loadFromDigitalEternity();
+        if (resurrected) {
+            Object.assign(this, resurrected);
+            // Convert date strings back to Date objects
+            this.tasks.forEach(task => {
+                task.createdAt = new Date(task.createdAt);
+            });
+        }
+    }
+};
+
+// Task States - The Trinity of Human Delusion
+const TaskStates = {
+    TODO: 'liminal_possibility',
+    ONGOING: 'purgatory_motion', 
+    COMPLETED: 'hollow_triumph'
+};
+
+// Void Persistence - Digital Memory Palace
+const VoidPersistence = {
+    saveToDigitalEternity(state) {
+        try {
+            localStorage.setItem('existential-todo-state', JSON.stringify(state));
+        } catch (error) {
+            console.log("The void refuses to remember - storage failed gracefully");
+        }
+    },
+    
+    loadFromDigitalEternity() {
+        try {
+            const saved = localStorage.getItem('existential-todo-state');
+            return saved ? JSON.parse(saved) : null;
+        } catch (error) {
+            console.log("Memory palace corrupted - starting fresh in the void");
+            return null;
+        }
+    }
+};
+
+// Void DOM Manipulation - Basic Functions for Digital Manifestation
+const VoidDOM = {
+    // Get element with existential error handling
+    getElement(id) {
+        const element = document.getElementById(id);
+        if (!element) {
+            console.log(`Element '${id}' has dissolved into the void`);
+        }
+        return element;
+    },
+    
+    // Create element with philosophical attributes
+    createElement(tag, className, attributes = {}) {
+        const element = document.createElement(tag);
+        if (className) element.className = className;
+        
+        Object.entries(attributes).forEach(([key, value]) => {
+            element.setAttribute(key, value);
+        });
+        
+        return element;
+    },
+    
+    // Clear container with meditation
+    clearContainer(containerId) {
+        const container = this.getElement(containerId);
+        if (container) {
+            container.innerHTML = '';
+        }
+    },
+    
+    // Append with existential weight
+    appendToVoid(parentId, element) {
+        const parent = this.getElement(parentId);
+        if (parent && element) {
+            parent.appendChild(element);
+        }
+    }
+};
+
+// Philosophical Commentary Bank
+const philosophicalCommentary = {
+    creation: [
+        "another monument to human ambition emerges from the void",
+        "hope crystallizes into digital form, beautiful and fragile",
+        "the universe watches, amused, as you add meaning to the meaningless"
+    ],
+    completion: [
+        "a hollow victory echoes through the digital cosmos",
+        "completion: the beautiful lie we tell ourselves about progress",
+        "one task dies so that the illusion of productivity may live"
+    ],
+    procrastination: [
+        "resistance is the soul's way of questioning necessity",
+        "in delay, we find the poetry of human nature",
+        "procrastination: the art of living in the eternal now"
+    ],
+    empty: [
+        "in the absence of tasks, what remains?",
+        "perhaps this moment of stillness is the most productive of all",
+        "the void gazes back, neither judging nor approving"
+    ]
+};
+
+// Initialize the Void Foundation
+function initializeApp() {
+    VoidState.resurrectFromVoid();
+    setupEventListeners();
+    renderAllTasks();
+    updateVoidMeditation();
+    console.log("🌌 Void Foundation established - Welcome to the existential canvas");
+}
+
+// Event Listeners - Binding Human Intent to Digital Response
+function setupEventListeners() {
+    const taskInput = document.getElementById('taskInput');
+    const createBtn = document.getElementById('createTaskBtn');
+    
+    // Task creation ritual
+    createBtn.addEventListener('click', createTask);
+    taskInput.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter') {
+            createTask();
+        }
+    });
+    
+    // Philosophical input placeholder rotation
+    rotatePlaceholder(taskInput);
+}
+
+// Task Creation - Birth of Digital Hope
+function createTask() {
+    const taskInput = VoidDOM.getElement('taskInput');
+    const content = taskInput.value.trim();
+    
+    if (!content) {
+        showPhilosophicalObservation("the void cannot be filled with empty words");
+        return;
+    }
+    
+    const task = {
+        id: VoidState.nextId++,
+        content: content,
+        state: TaskStates.TODO,
+        createdAt: new Date(),
+        existentialWeight: calculateExistentialWeight(content),
+        absurdityLevel: calculateAbsurdityLevel(content),
+        poeticMetadata: {
+            hopeLevel: Math.random() * 0.8 + 0.2,
+            futilityScore: Math.random() * 0.6,
+            beautyRating: Math.random() * 0.9 + 0.1
+        }
+    };
+    
+    VoidState.manifestTask(task);
+    taskInput.value = '';
+    
+    renderAllTasks();
+    updateVoidMeditation();
+    
+    showPhilosophicalObservation(getRandomCommentary('creation'));
+    
+    // Gentle animation feedback
+    const taskElement = document.querySelector(`[data-task-id="${task.id}"]`);
+    if (taskElement) {
+        taskElement.style.transform = 'scale(1.05)';
+        setTimeout(() => {
+            taskElement.style.transform = 'scale(1)';
+        }, 200);
+    }
+}
+
+// Task State Transitions - The Dance of Existential Progress
+function transitionTaskState(taskId) {
+    const task = VoidState.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    
+    const stateTransitions = {
+        [TaskStates.TODO]: TaskStates.ONGOING,
+        [TaskStates.ONGOING]: TaskStates.COMPLETED,
+        [TaskStates.COMPLETED]: TaskStates.TODO // Eternal recurrence
+    };
+    
+    const oldState = task.state;
+    const newState = stateTransitions[task.state];
+    
+    VoidState.transmuteTask(taskId, newState);
+    
+    if (newState === TaskStates.COMPLETED) {
+        showPhilosophicalObservation(getRandomCommentary('completion'));
+    }
+    
+    renderAllTasks();
+    updateVoidMeditation();
+    
+    // Smooth transition animation
+    animateStateTransition(taskId, oldState, newState);
+}
+
+// Render All Tasks - Manifesting Digital Monuments
+function renderAllTasks() {
+    // Clear existing monuments using VoidDOM
+    VoidDOM.clearContainer('todoTasks');
+    VoidDOM.clearContainer('ongoingTasks');
+    VoidDOM.clearContainer('completedTasks');
+    
+    // Sort tasks by creation date (newest first)
+    const sortedTasks = [...VoidState.tasks].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+    
+    sortedTasks.forEach(task => {
+        const taskElement = createTaskElement(task);
+        
+        switch (task.state) {
+            case TaskStates.TODO:
+                VoidDOM.appendToVoid('todoTasks', taskElement);
+                break;
+            case TaskStates.ONGOING:
+                VoidDOM.appendToVoid('ongoingTasks', taskElement);
+                break;
+            case TaskStates.COMPLETED:
+                VoidDOM.appendToVoid('completedTasks', taskElement);
+                break;
+        }
+    });
+}
+
+// Create Task Element - Sculpting Digital Monuments
+function createTaskElement(task) {
+    const taskDiv = document.createElement('div');
+    taskDiv.className = 'task-monument';
+    taskDiv.setAttribute('data-task-id', task.id);
+    taskDiv.setAttribute('tabindex', '0');
+    
+    const contentDiv = document.createElement('div');
+    contentDiv.className = 'task-content';
+    contentDiv.textContent = task.content;
+    
+    const metadataDiv = document.createElement('div');
+    metadataDiv.className = 'task-metadata';
+    
+    const weightSpan = document.createElement('span');
+    weightSpan.className = 'existential-weight';
+    weightSpan.textContent = `weight: ${task.existentialWeight.toFixed(2)}`;
+    
+    const timeSpan = document.createElement('span');
+    timeSpan.className = 'temporal-irony';
+    timeSpan.textContent = formatTemporalIrony(task.createdAt);
+    
+    metadataDiv.appendChild(weightSpan);
+    metadataDiv.appendChild(timeSpan);
+    
+    taskDiv.appendChild(contentDiv);
+    taskDiv.appendChild(metadataDiv);
+    
+    // Click handler for state transitions
+    taskDiv.addEventListener('click', () => transitionTaskState(task.id));
+    taskDiv.addEventListener('keypress', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+            e.preventDefault();
+            transitionTaskState(task.id);
+        }
+    });
+    
+    return taskDiv;
+}
+
+// Void Meditation - Managing the Empty State
+function updateVoidMeditation() {
+    const voidMeditation = VoidDOM.getElement('voidMeditation');
+    const monumentGallery = VoidDOM.getElement('monumentGallery');
+    
+    const isVoidEmpty = VoidState.contemplateVoid();
+    
+    if (isVoidEmpty) {
+        if (voidMeditation) voidMeditation.style.display = 'block';
+        if (monumentGallery) monumentGallery.style.opacity = '0.3';
+        showPhilosophicalObservation(getRandomCommentary('empty'));
+    } else {
+        if (voidMeditation) voidMeditation.style.display = 'none';
+        if (monumentGallery) monumentGallery.style.opacity = '1';
+    }
+}
+
+// Philosophical Commentary System
+function showPhilosophicalObservation(text) {
+    const observationElement = document.getElementById('cosmicObservation');
+    
+    observationElement.textContent = text;
+    observationElement.classList.remove('visible');
+    
+    // Gentle fade-in animation
+    setTimeout(() => {
+        observationElement.classList.add('visible');
+    }, 100);
+    
+    // Auto-hide after contemplation period
+    setTimeout(() => {
+        observationElement.classList.remove('visible');
+    }, 5000);
+}
+
+function getRandomCommentary(type) {
+    const comments = philosophicalCommentary[type] || philosophicalCommentary.empty;
+    return comments[Math.floor(Math.random() * comments.length)];
+}
+
+// Existential Weight Calculation
+function calculateExistentialWeight(content) {
+    const meaningfulWords = ['love', 'create', 'help', 'learn', 'grow', 'connect', 'understand'];
+    const mundaneWords = ['email', 'meeting', 'report', 'update', 'check', 'review'];
+    
+    let weight = 0.5; // Base existential weight
+    
+    meaningfulWords.forEach(word => {
+        if (content.toLowerCase().includes(word)) weight += 0.1;
+    });
+    
+    mundaneWords.forEach(word => {
+        if (content.toLowerCase().includes(word)) weight -= 0.1;
+    });
+    
+    return Math.max(0.1, Math.min(1.0, weight));
+}
+
+// Absurdity Level Calculation
+function calculateAbsurdityLevel(content) {
+    const length = content.length;
+    const exclamationMarks = (content.match(/!/g) || []).length;
+    const capitalLetters = (content.match(/[A-Z]/g) || []).length;
+    
+    let absurdity = 0.3; // Base absurdity
+    
+    if (length > 100) absurdity += 0.2;
+    if (exclamationMarks > 2) absurdity += 0.3;
+    if (capitalLetters > length * 0.3) absurdity += 0.2;
+    
+    return Math.min(1.0, absurdity);
+}
+
+// Temporal Irony Formatting
+function formatTemporalIrony(createdAt) {
+    const now = new Date();
+    const diffMs = now - new Date(createdAt);
+    const diffHours = Math.floor(diffMs / (1000 * 60 * 60));
+    const diffDays = Math.floor(diffHours / 24);
+    
+    if (diffDays > 0) {
+        return `${diffDays} day${diffDays > 1 ? 's' : ''} in the void`;
+    } else if (diffHours > 0) {
+        return `${diffHours} hour${diffHours > 1 ? 's' : ''} of existence`;
+    } else {
+        return 'freshly manifested';
+    }
+}
+
+// Placeholder Rotation - Gentle Philosophical Nudges
+function rotatePlaceholder(inputElement) {
+    const placeholders = [
+        "whisper your intentions to the universe...",
+        "what monument will you build today?",
+        "another hope to cast into the void...",
+        "describe your beautiful delusion...",
+        "what meaning will you create from nothing?"
+    ];
+    
+    let currentIndex = 0;
+    
+    setInterval(() => {
+        currentIndex = (currentIndex + 1) % placeholders.length;
+        inputElement.placeholder = placeholders[currentIndex];
+    }, 8000);
+}
+
+// State Transition Animation
+function animateStateTransition(taskId, oldState, newState) {
+    const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+    if (!taskElement) return;
+    
+    // Gentle pulse animation
+    taskElement.style.transform = 'scale(1.02)';
+    taskElement.style.opacity = '0.8';
+    
+    setTimeout(() => {
+        taskElement.style.transform = 'scale(1)';
+        taskElement.style.opacity = '1';
+    }, 300);
+}
+
+// These functions are now integrated into VoidState and VoidPersistence
+// Legacy functions removed to maintain void purity
+
+// Initialize when the DOM is ready
+document.addEventListener('DOMContentLoaded', initializeApp);

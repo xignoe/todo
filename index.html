@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>An Existential Todo Experience</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <main class="void-canvas" id="voidCanvas">
+        <header class="existential-header">
+            <h1 class="void-title">tasks against the void</h1>
+            <p class="cosmic-subtitle">a meditation on human productivity</p>
+        </header>
+
+        <section class="task-creation-ritual" id="taskCreation">
+            <div class="hope-input-container">
+                <input 
+                    type="text" 
+                    id="taskInput" 
+                    class="hope-input" 
+                    placeholder="whisper your intentions to the universe..."
+                    maxlength="200"
+                >
+                <button id="createTaskBtn" class="manifestation-button">
+                    manifest
+                </button>
+            </div>
+        </section>
+
+        <section class="monument-gallery" id="monumentGallery">
+            <div class="state-triptych">
+                <div class="state-column" data-state="liminal_possibility">
+                    <h2 class="state-title">liminal possibility</h2>
+                    <div class="task-monuments" id="todoTasks"></div>
+                </div>
+                
+                <div class="state-column" data-state="purgatory_motion">
+                    <h2 class="state-title">purgatory motion</h2>
+                    <div class="task-monuments" id="ongoingTasks"></div>
+                </div>
+                
+                <div class="state-column" data-state="hollow_triumph">
+                    <h2 class="state-title">hollow triumph</h2>
+                    <div class="task-monuments" id="completedTasks"></div>
+                </div>
+            </div>
+        </section>
+
+        <section class="void-meditation" id="voidMeditation" style="display: none;">
+            <div class="emptiness-container">
+                <p class="void-wisdom">
+                    in the absence of tasks, what remains?
+                </p>
+                <p class="gentle-mockery">
+                    perhaps this moment of stillness is the most productive of all
+                </p>
+            </div>
+        </section>
+
+        <section class="philosophical-commentary" id="philosophicalCommentary">
+            <div class="cosmic-observation" id="cosmicObservation"></div>
+        </section>
+    </main>
+
+    <script src="app.js"></script>
+</body>
+</html>

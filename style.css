@@ -1,0 +1,316 @@
+/* Existential Design Tokens */
+:root {
+    /* Colors of the Void */
+    --void-black: #0a0a0a;
+    --whisper-gray: #2a2a2a;
+    --contemplation-gray: #4a4a4a;
+    --gentle-white: #f8f8f8;
+    --hope-accent: #6b7280;
+    --futility-accent: #9ca3af;
+    
+    /* Typography of Meaning */
+    --font-primary: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+    --font-mono: 'SF Mono', Monaco, 'Cascadia Code', monospace;
+    
+    /* Spacing Philosophy */
+    --space-void: 0;
+    --space-whisper: 0.25rem;
+    --space-breath: 0.5rem;
+    --space-pause: 1rem;
+    --space-contemplation: 2rem;
+    --space-meditation: 4rem;
+    --space-existential: 8rem;
+    
+    /* Transitions of Being */
+    --transition-gentle: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    --transition-profound: all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+}
+
+/* The Void Foundation */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: var(--font-primary);
+    background: var(--void-black);
+    color: var(--gentle-white);
+    line-height: 1.6;
+    min-height: 100vh;
+    overflow-x: hidden;
+}
+
+/* The Canvas of Existence */
+.void-canvas {
+    min-height: 100vh;
+    padding: var(--space-contemplation);
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-meditation);
+    max-width: 1200px;
+    margin: 0 auto;
+}
+
+/* Existential Header */
+.existential-header {
+    text-align: center;
+    margin-bottom: var(--space-meditation);
+}
+
+.void-title {
+    font-size: clamp(2rem, 5vw, 4rem);
+    font-weight: 200;
+    letter-spacing: 0.1em;
+    color: var(--gentle-white);
+    margin-bottom: var(--space-breath);
+    text-transform: lowercase;
+}
+
+.cosmic-subtitle {
+    font-size: 1rem;
+    color: var(--futility-accent);
+    font-style: italic;
+    font-weight: 300;
+}
+
+/* Task Creation Ritual */
+.task-creation-ritual {
+    margin-bottom: var(--space-meditation);
+}
+
+.hope-input-container {
+    display: flex;
+    gap: var(--space-pause);
+    max-width: 600px;
+    margin: 0 auto;
+}
+
+.hope-input {
+    flex: 1;
+    background: var(--whisper-gray);
+    border: 1px solid var(--contemplation-gray);
+    border-radius: 0;
+    padding: var(--space-pause);
+    color: var(--gentle-white);
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    transition: var(--transition-gentle);
+}
+
+.hope-input:focus {
+    outline: none;
+    border-color: var(--hope-accent);
+    background: var(--contemplation-gray);
+}
+
+.hope-input::placeholder {
+    color: var(--futility-accent);
+    font-style: italic;
+}
+
+.manifestation-button {
+    background: var(--contemplation-gray);
+    border: 1px solid var(--hope-accent);
+    color: var(--gentle-white);
+    padding: var(--space-pause) var(--space-contemplation);
+    cursor: pointer;
+    font-family: var(--font-primary);
+    font-size: 1rem;
+    text-transform: lowercase;
+    transition: var(--transition-gentle);
+}
+
+.manifestation-button:hover {
+    background: var(--hope-accent);
+    transform: translateY(-1px);
+}
+
+/* Monument Gallery */
+.monument-gallery {
+    flex: 1;
+}
+
+.state-triptych {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: var(--space-contemplation);
+    min-height: 400px;
+}
+
+.state-column {
+    background: var(--whisper-gray);
+    border: 1px solid var(--contemplation-gray);
+    padding: var(--space-contemplation);
+    transition: var(--transition-gentle);
+}
+
+.state-column:hover {
+    border-color: var(--hope-accent);
+}
+
+.state-title {
+    font-size: 1.2rem;
+    font-weight: 300;
+    text-transform: lowercase;
+    letter-spacing: 0.05em;
+    margin-bottom: var(--space-contemplation);
+    color: var(--futility-accent);
+    text-align: center;
+    border-bottom: 1px solid var(--contemplation-gray);
+    padding-bottom: var(--space-pause);
+}
+
+/* Task Monuments */
+.task-monuments {
+    display: flex;
+    flex-direction: column;
+    gap: var(--space-pause);
+    min-height: 200px;
+}
+
+.task-monument {
+    background: var(--contemplation-gray);
+    border: 1px solid var(--hope-accent);
+    padding: var(--space-pause);
+    cursor: pointer;
+    transition: var(--transition-profound);
+    position: relative;
+    overflow: hidden;
+}
+
+.task-monument:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+}
+
+.task-content {
+    font-size: 1rem;
+    line-height: 1.4;
+    margin-bottom: var(--space-breath);
+}
+
+.task-metadata {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 0.8rem;
+    color: var(--futility-accent);
+    font-family: var(--font-mono);
+}
+
+.existential-weight {
+    opacity: 0.7;
+}
+
+.temporal-irony {
+    font-style: italic;
+}
+
+/* Void Meditation (Empty State) */
+.void-meditation {
+    text-align: center;
+    padding: var(--space-existential);
+    background: var(--whisper-gray);
+    border: 1px dashed var(--contemplation-gray);
+}
+
+.emptiness-container {
+    max-width: 500px;
+    margin: 0 auto;
+}
+
+.void-wisdom {
+    font-size: 1.5rem;
+    font-weight: 200;
+    margin-bottom: var(--space-contemplation);
+    color: var(--gentle-white);
+    font-style: italic;
+}
+
+.gentle-mockery {
+    font-size: 1rem;
+    color: var(--futility-accent);
+    font-weight: 300;
+}
+
+/* Philosophical Commentary */
+.philosophical-commentary {
+    margin-top: var(--space-meditation);
+}
+
+.cosmic-observation {
+    background: var(--whisper-gray);
+    border-left: 3px solid var(--hope-accent);
+    padding: var(--space-pause) var(--space-contemplation);
+    font-style: italic;
+    color: var(--futility-accent);
+    max-width: 600px;
+    margin: 0 auto;
+    opacity: 0;
+    transform: translateY(20px);
+    transition: var(--transition-profound);
+}
+
+.cosmic-observation.visible {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* State-specific styling */
+[data-state="liminal_possibility"] {
+    border-left: 3px solid #3b82f6;
+}
+
+[data-state="purgatory_motion"] {
+    border-left: 3px solid #f59e0b;
+}
+
+[data-state="hollow_triumph"] {
+    border-left: 3px solid #10b981;
+}
+
+/* Responsive Meditation */
+@media (max-width: 768px) {
+    .void-canvas {
+        padding: var(--space-pause);
+        gap: var(--space-contemplation);
+    }
+    
+    .state-triptych {
+        grid-template-columns: 1fr;
+        gap: var(--space-pause);
+    }
+    
+    .hope-input-container {
+        flex-direction: column;
+    }
+    
+    .void-title {
+        font-size: 2rem;
+    }
+}
+
+/* Accessibility with Artistic Integrity */
+@media (prefers-reduced-motion: reduce) {
+    * {
+        animation-duration: 0.01ms !important;
+        animation-iteration-count: 1 !important;
+        transition-duration: 0.01ms !important;
+    }
+}
+
+/* Focus states for keyboard navigation */
+.hope-input:focus,
+.manifestation-button:focus,
+.task-monument:focus {
+    outline: 2px solid var(--hope-accent);
+    outline-offset: 2px;
+}
+
+/* Selection styling */
+::selection {
+    background: var(--hope-accent);
+    color: var(--void-black);
+}
