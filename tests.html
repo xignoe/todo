@@ -1,0 +1,305 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Existential Todo Tests - Void Verification</title>
+    <style>
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
+            background: #0a0a0a;
+            color: #f8f8f8;
+            padding: 2rem;
+            line-height: 1.6;
+        }
+        .test-suite {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        .test-result {
+            padding: 1rem;
+            margin: 0.5rem 0;
+            border-left: 3px solid;
+            background: #2a2a2a;
+        }
+        .test-pass {
+            border-color: #10b981;
+        }
+        .test-fail {
+            border-color: #ef4444;
+        }
+        .test-summary {
+            background: #4a4a4a;
+            padding: 1rem;
+            margin: 2rem 0;
+            text-align: center;
+        }
+        h1, h2 {
+            color: #6b7280;
+            font-weight: 300;
+        }
+        code {
+            background: #1a1a1a;
+            padding: 0.2rem 0.4rem;
+            border-radius: 2px;
+            font-family: 'SF Mono', Monaco, monospace;
+        }
+    </style>
+</head>
+<body>
+    <div class="test-suite">
+        <h1>void verification protocol</h1>
+        <p>testing the existential foundations of digital productivity</p>
+        
+        <div id="testResults"></div>
+        <div id="testSummary" class="test-summary"></div>
+    </div>
+
+    <script>
+        // Test Framework - Minimal Existential Testing
+        class VoidTester {
+            constructor() {
+                this.tests = [];
+                this.passed = 0;
+                this.failed = 0;
+            }
+
+            test(description, testFn) {
+                try {
+                    testFn();
+                    this.passed++;
+                    this.addResult(description, true);
+                } catch (error) {
+                    this.failed++;
+                    this.addResult(description, false, error.message);
+                }
+            }
+
+            addResult(description, passed, error = null) {
+                const resultsDiv = document.getElementById('testResults');
+                const resultDiv = document.createElement('div');
+                resultDiv.className = `test-result ${passed ? 'test-pass' : 'test-fail'}`;
+                resultDiv.innerHTML = `
+                    <strong>${passed ? '✓' : '✗'} ${description}</strong>
+                    ${error ? `<br><code>${error}</code>` : ''}
+                `;
+                resultsDiv.appendChild(resultDiv);
+            }
+
+            assert(condition, message) {
+                if (!condition) {
+                    throw new Error(message || 'Assertion failed');
+                }
+            }
+
+            assertEqual(actual, expected, message) {
+                if (actual !== expected) {
+                    throw new Error(message || `Expected ${expected}, got ${actual}`);
+                }
+            }
+
+            assertTrue(condition, message) {
+                this.assert(condition === true, message || 'Expected true');
+            }
+
+            assertFalse(condition, message) {
+                this.assert(condition === false, message || 'Expected false');
+            }
+
+            finish() {
+                const summaryDiv = document.getElementById('testSummary');
+                const total = this.passed + this.failed;
+                summaryDiv.innerHTML = `
+                    <h2>test results</h2>
+                    <p>${this.passed} passed, ${this.failed} failed, ${total} total</p>
+                    <p>${this.failed === 0 ? 'the void approves' : 'existential errors detected'}</p>
+                `;
+            }
+        }
+
+        // Mock DOM elements for testing
+        function setupMockDOM() {
+            document.body.innerHTML += `
+                <div style="display: none;">
+                    <input id="taskInput" />
+                    <button id="createTaskBtn"></button>
+                    <div id="todoTasks"></div>
+                    <div id="ongoingTasks"></div>
+                    <div id="completedTasks"></div>
+                    <div id="voidMeditation"></div>
+                    <div id="monumentGallery"></div>
+                    <div id="cosmicObservation"></div>
+                </div>
+            `;
+        }
+
+        // Load the main app code
+        function loadAppCode() {
+            return fetch('app.js')
+                .then(response => response.text())
+                .then(code => {
+                    // Execute the app code in a safe context
+                    eval(code);
+                });
+        }
+
+        // Run Tests
+        async function runTests() {
+            setupMockDOM();
+            
+            try {
+                await loadAppCode();
+            } catch (error) {
+                console.log('Loading app code directly from current context');
+            }
+
+            const tester = new VoidTester();
+
+            // Test 1: VoidState initialization
+            tester.test('VoidState initializes correctly', () => {
+                tester.assertTrue(typeof VoidState === 'object', 'VoidState should be an object');
+                tester.assertTrue(Array.isArray(VoidState.tasks), 'tasks should be an array');
+                tester.assertEqual(typeof VoidState.nextId, 'number', 'nextId should be a number');
+                tester.assertTrue(typeof VoidState.userPatterns === 'object', 'userPatterns should be an object');
+            });
+
+            // Test 2: Task States constants
+            tester.test('TaskStates are properly defined', () => {
+                tester.assertEqual(TaskStates.TODO, 'liminal_possibility');
+                tester.assertEqual(TaskStates.ONGOING, 'purgatory_motion');
+                tester.assertEqual(TaskStates.COMPLETED, 'hollow_triumph');
+            });
+
+            // Test 3: Task creation
+            tester.test('Task creation works correctly', () => {
+                const initialTaskCount = VoidState.tasks.length;
+                const testTask = {
+                    id: 999,
+                    content: 'test task',
+                    state: TaskStates.TODO,
+                    createdAt: new Date(),
+                    existentialWeight: 0.5,
+                    absurdityLevel: 0.3,
+                    poeticMetadata: { hopeLevel: 0.5, futilityScore: 0.3, beautyRating: 0.7 }
+                };
+                
+                VoidState.manifestTask(testTask);
+                tester.assertEqual(VoidState.tasks.length, initialTaskCount + 1, 'Task should be added');
+                tester.assertEqual(VoidState.userPatterns.creationCount, 1, 'Creation count should increment');
+            });
+
+            // Test 4: Task state transitions
+            tester.test('Task state transitions work correctly', () => {
+                const task = VoidState.tasks[VoidState.tasks.length - 1];
+                const originalState = task.state;
+                
+                VoidState.transmuteTask(task.id, TaskStates.ONGOING);
+                tester.assertEqual(task.state, TaskStates.ONGOING, 'Task state should change to ongoing');
+                
+                VoidState.transmuteTask(task.id, TaskStates.COMPLETED);
+                tester.assertEqual(task.state, TaskStates.COMPLETED, 'Task state should change to completed');
+                tester.assertTrue(VoidState.userPatterns.completionCount > 0, 'Completion count should increment');
+            });
+
+            // Test 5: Task deletion
+            tester.test('Task deletion works correctly', () => {
+                const initialTaskCount = VoidState.tasks.length;
+                const taskToDelete = VoidState.tasks[VoidState.tasks.length - 1];
+                
+                const success = VoidState.dissolveTask(taskToDelete.id);
+                tester.assertTrue(success, 'Task deletion should return true');
+                tester.assertEqual(VoidState.tasks.length, initialTaskCount - 1, 'Task should be removed');
+            });
+
+            // Test 6: Existential weight calculation
+            tester.test('Existential weight calculation works', () => {
+                const meaningfulTask = calculateExistentialWeight('help others learn and grow');
+                const mundaneTask = calculateExistentialWeight('check email and update report');
+                
+                tester.assertTrue(meaningfulTask > 0.5, 'Meaningful tasks should have higher weight');
+                tester.assertTrue(mundaneTask < 0.5, 'Mundane tasks should have lower weight');
+                tester.assertTrue(meaningfulTask >= 0.1 && meaningfulTask <= 1.0, 'Weight should be in valid range');
+            });
+
+            // Test 7: Absurdity level calculation
+            tester.test('Absurdity level calculation works', () => {
+                const normalTask = calculateAbsurdityLevel('normal task');
+                const absurdTask = calculateAbsurdityLevel('VERY IMPORTANT TASK WITH LOTS OF CAPS AND EXCLAMATION MARKS!!!');
+                
+                tester.assertTrue(absurdTask > normalTask, 'Absurd tasks should have higher absurdity');
+                tester.assertTrue(normalTask >= 0.1 && normalTask <= 1.0, 'Absurdity should be in valid range');
+            });
+
+            // Test 8: Temporal irony formatting
+            tester.test('Temporal irony formatting works', () => {
+                const now = new Date();
+                const hourAgo = new Date(now.getTime() - 60 * 60 * 1000);
+                const dayAgo = new Date(now.getTime() - 24 * 60 * 60 * 1000);
+                
+                const fresh = formatTemporalIrony(now);
+                const hourOld = formatTemporalIrony(hourAgo);
+                const dayOld = formatTemporalIrony(dayAgo);
+                
+                tester.assertEqual(fresh, 'freshly manifested');
+                tester.assertTrue(hourOld.includes('hour'), 'Should show hours for hour-old tasks');
+                tester.assertTrue(dayOld.includes('day'), 'Should show days for day-old tasks');
+            });
+
+            // Test 9: VoidDOM utility functions
+            tester.test('VoidDOM utilities work correctly', () => {
+                const element = VoidDOM.createElement('div', 'test-class', { 'data-test': 'value' });
+                tester.assertEqual(element.tagName, 'DIV');
+                tester.assertEqual(element.className, 'test-class');
+                tester.assertEqual(element.getAttribute('data-test'), 'value');
+                
+                const foundElement = VoidDOM.getElement('taskInput');
+                tester.assertTrue(foundElement !== null, 'Should find existing elements');
+            });
+
+            // Test 10: Philosophical commentary system
+            tester.test('Philosophical commentary system works', () => {
+                const creationComment = getRandomCommentary('creation');
+                const emptyComment = getRandomCommentary('empty');
+                const invalidComment = getRandomCommentary('nonexistent');
+                
+                tester.assertTrue(typeof creationComment === 'string', 'Should return string commentary');
+                tester.assertTrue(creationComment.length > 0, 'Commentary should not be empty');
+                tester.assertTrue(philosophicalCommentary.creation.includes(creationComment), 'Should return valid creation comment');
+                tester.assertTrue(philosophicalCommentary.empty.includes(invalidComment), 'Should fallback to empty comments');
+            });
+
+            // Test 11: Void contemplation
+            tester.test('Void contemplation works correctly', () => {
+                // Clear all tasks first
+                VoidState.tasks = [];
+                const isEmpty = VoidState.contemplateVoid();
+                tester.assertTrue(isEmpty, 'Should detect empty void');
+                tester.assertTrue(VoidState.userPatterns.voidGazeCount > 0, 'Should increment void gaze count');
+                
+                // Add a task
+                VoidState.tasks.push({ id: 1, content: 'test' });
+                const isNotEmpty = VoidState.contemplateVoid();
+                tester.assertFalse(isNotEmpty, 'Should detect non-empty void');
+            });
+
+            // Test 12: Persistence system
+            tester.test('Persistence system works', () => {
+                // Test saving
+                const testState = { tasks: [{ id: 1, content: 'test' }], nextId: 2 };
+                VoidPersistence.saveToDigitalEternity(testState);
+                
+                // Test loading
+                const loaded = VoidPersistence.loadFromDigitalEternity();
+                tester.assertTrue(loaded !== null, 'Should load saved state');
+                tester.assertEqual(loaded.nextId, 2, 'Should preserve nextId');
+                tester.assertEqual(loaded.tasks.length, 1, 'Should preserve tasks');
+            });
+
+            tester.finish();
+        }
+
+        // Start tests when page loads
+        document.addEventListener('DOMContentLoaded', runTests);
+    </script>
+</body>
+</html>

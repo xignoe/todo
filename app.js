@@ -31,6 +31,16 @@ const VoidState = {
         }
     },
     
+    dissolveTask(taskId) {
+        const taskIndex = this.tasks.findIndex(t => t.id === taskId);
+        if (taskIndex !== -1) {
+            this.tasks.splice(taskIndex, 1);
+            this.persistToVoid();
+            return true;
+        }
+        return false;
+    },
+    
     contemplateVoid() {
         this.userPatterns.voidGazeCount++;
         return this.tasks.length === 0;
@@ -141,16 +151,33 @@ const philosophicalCommentary = {
         "in the absence of tasks, what remains?",
         "perhaps this moment of stillness is the most productive of all",
         "the void gazes back, neither judging nor approving"
+    ],
+    dissolution: [
+        "another monument returns to the digital dust",
+        "in deletion, we find the poetry of letting go",
+        "the void welcomes back what was never truly ours"
     ]
 };
 
 // Initialize the Void Foundation
 function initializeApp() {
-    VoidState.resurrectFromVoid();
-    setupEventListeners();
-    renderAllTasks();
-    updateVoidMeditation();
-    console.log("🌌 Void Foundation established - Welcome to the existential canvas");
+    try {
+        VoidState.resurrectFromVoid();
+        setupEventListeners();
+        renderAllTasks();
+        updateVoidMeditation();
+        
+        // Add keyboard shortcuts for enhanced accessibility
+        setupKeyboardShortcuts();
+        
+        // Preload animations for smoother performance
+        preloadAnimations();
+        
+        console.log("🌌 Void Foundation established - Welcome to the existential canvas");
+    } catch (error) {
+        console.error("Void initialization failed gracefully:", error);
+        showPhilosophicalObservation("the void resists initialization, but existence persists");
+    }
 }
 
 // Event Listeners - Binding Human Intent to Digital Response
@@ -241,60 +268,126 @@ function transitionTaskState(taskId) {
 
 // Render All Tasks - Manifesting Digital Monuments
 function renderAllTasks() {
-    // Clear existing monuments using VoidDOM
-    VoidDOM.clearContainer('todoTasks');
-    VoidDOM.clearContainer('ongoingTasks');
-    VoidDOM.clearContainer('completedTasks');
-    
-    // Sort tasks by creation date (newest first)
-    const sortedTasks = [...VoidState.tasks].sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
-    
-    sortedTasks.forEach(task => {
-        const taskElement = createTaskElement(task);
-        
-        switch (task.state) {
-            case TaskStates.TODO:
-                VoidDOM.appendToVoid('todoTasks', taskElement);
-                break;
-            case TaskStates.ONGOING:
-                VoidDOM.appendToVoid('ongoingTasks', taskElement);
-                break;
-            case TaskStates.COMPLETED:
-                VoidDOM.appendToVoid('completedTasks', taskElement);
-                break;
+    // Clear existing monuments with gentle fade
+    const containers = ['todoTasks', 'ongoingTasks', 'completedTasks'];
+    containers.forEach(containerId => {
+        const container = VoidDOM.getElement(containerId);
+        if (container) {
+            // Fade out existing monuments
+            Array.from(container.children).forEach((child, index) => {
+                setTimeout(() => {
+                    child.style.opacity = '0';
+                    child.style.transform = 'translateY(-10px) scale(0.95)';
+                }, index * 50);
+            });
+            
+            // Clear after fade animation
+            setTimeout(() => {
+                VoidDOM.clearContainer(containerId);
+            }, 300);
         }
     });
+    
+    // Sort tasks by creation date (newest first) and existential weight
+    const sortedTasks = [...VoidState.tasks].sort((a, b) => {
+        // Primary sort by creation date
+        const dateSort = new Date(b.createdAt) - new Date(a.createdAt);
+        // Secondary sort by existential weight for same-day tasks
+        if (Math.abs(dateSort) < 86400000) { // Same day (24 hours in ms)
+            return b.existentialWeight - a.existentialWeight;
+        }
+        return dateSort;
+    });
+    
+    // Render monuments with staggered animation
+    setTimeout(() => {
+        sortedTasks.forEach((task, index) => {
+            const taskElement = createTaskElement(task);
+            
+            // Add staggered entrance delay
+            taskElement.style.animationDelay = `${index * 100}ms`;
+            
+            switch (task.state) {
+                case TaskStates.TODO:
+                    VoidDOM.appendToVoid('todoTasks', taskElement);
+                    break;
+                case TaskStates.ONGOING:
+                    VoidDOM.appendToVoid('ongoingTasks', taskElement);
+                    break;
+                case TaskStates.COMPLETED:
+                    VoidDOM.appendToVoid('completedTasks', taskElement);
+                    break;
+            }
+        });
+    }, 350);
 }
 
 // Create Task Element - Sculpting Digital Monuments
 function createTaskElement(task) {
-    const taskDiv = document.createElement('div');
-    taskDiv.className = 'task-monument';
-    taskDiv.setAttribute('data-task-id', task.id);
-    taskDiv.setAttribute('tabindex', '0');
+    const taskDiv = VoidDOM.createElement('div', 'task-monument', {
+        'data-task-id': task.id,
+        'data-state': task.state,
+        'tabindex': '0',
+        'role': 'button',
+        'aria-label': `Task: ${task.content}. Current state: ${task.state.replace('_', ' ')}. Click to transition.`
+    });
     
-    const contentDiv = document.createElement('div');
-    contentDiv.className = 'task-content';
+    // Perfect typography content with void-bordering design
+    const contentDiv = VoidDOM.createElement('div', 'task-content');
     contentDiv.textContent = task.content;
     
-    const metadataDiv = document.createElement('div');
-    metadataDiv.className = 'task-metadata';
+    // Add subtle content enhancement based on existential weight
+    if (task.existentialWeight > 0.7) {
+        contentDiv.style.fontWeight = '400';
+        contentDiv.style.letterSpacing = '0.02em';
+    } else if (task.existentialWeight < 0.3) {
+        contentDiv.style.opacity = '0.85';
+        contentDiv.style.fontStyle = 'italic';
+    }
     
-    const weightSpan = document.createElement('span');
-    weightSpan.className = 'existential-weight';
+    // Existential metadata with enhanced visualization
+    const metadataDiv = VoidDOM.createElement('div', 'task-metadata');
+    
+    const weightSpan = VoidDOM.createElement('span', 'existential-weight');
     weightSpan.textContent = `weight: ${task.existentialWeight.toFixed(2)}`;
+    weightSpan.style.setProperty('--weight-opacity', task.existentialWeight);
     
-    const timeSpan = document.createElement('span');
-    timeSpan.className = 'temporal-irony';
+    const timeSpan = VoidDOM.createElement('span', 'temporal-irony');
     timeSpan.textContent = formatTemporalIrony(task.createdAt);
+    
+    // Add absurdity indicator for high absurdity tasks
+    if (task.absurdityLevel > 0.6) {
+        const absurditySpan = VoidDOM.createElement('span', 'absurdity-indicator');
+        absurditySpan.textContent = '∞';
+        absurditySpan.style.cssText = `
+            opacity: ${task.absurdityLevel};
+            font-size: 0.9em;
+            margin-left: var(--space-breath);
+            color: var(--hope-accent);
+        `;
+        metadataDiv.appendChild(absurditySpan);
+    }
     
     metadataDiv.appendChild(weightSpan);
     metadataDiv.appendChild(timeSpan);
     
+    // Add delete button with philosophical styling
+    const deleteBtn = VoidDOM.createElement('button', 'dissolution-button', {
+        'aria-label': `Delete task: ${task.content}`,
+        'title': 'dissolve into the void'
+    });
+    deleteBtn.textContent = '×';
+    deleteBtn.addEventListener('click', (e) => {
+        e.stopPropagation(); // Prevent state transition
+        dissolveTaskWithAnimation(task.id);
+    });
+    
+    metadataDiv.appendChild(deleteBtn);
+    
     taskDiv.appendChild(contentDiv);
     taskDiv.appendChild(metadataDiv);
     
-    // Click handler for state transitions
+    // Enhanced interaction handlers with philosophical feedback
     taskDiv.addEventListener('click', () => transitionTaskState(task.id));
     taskDiv.addEventListener('keypress', (e) => {
         if (e.key === 'Enter' || e.key === ' ') {
@@ -303,7 +396,98 @@ function createTaskElement(task) {
         }
     });
     
+    // Sophisticated hover effects that border on the void
+    taskDiv.addEventListener('mouseenter', () => {
+        weightSpan.style.setProperty('--weight-opacity', Math.min(1, task.existentialWeight + 0.3));
+        taskDiv.style.setProperty('--hover-intensity', task.poeticMetadata.beautyRating);
+        
+        // Subtle content breathing effect
+        contentDiv.style.transform = 'scale(1.005)';
+        contentDiv.style.transition = 'transform 0.3s ease-out';
+    });
+    
+    taskDiv.addEventListener('mouseleave', () => {
+        weightSpan.style.setProperty('--weight-opacity', task.existentialWeight);
+        contentDiv.style.transform = 'scale(1)';
+    });
+    
+    // Monument birth animation with staggered entrance
+    taskDiv.classList.add('monument-entering');
+    setTimeout(() => {
+        taskDiv.classList.remove('monument-entering');
+    }, 800);
+    
     return taskDiv;
+}
+
+// Enhanced Task Monument Update Function
+function updateTaskMonument(taskId, newState) {
+    const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+    if (!taskElement) return;
+    
+    const task = VoidState.tasks.find(t => t.id === taskId);
+    if (!task) return;
+    
+    // Update the monument's state with smooth transition
+    taskElement.setAttribute('data-state', newState);
+    
+    // Add transitioning class for enhanced animations
+    taskElement.classList.add('monument-transitioning');
+    
+    // Update metadata to reflect new temporal reality
+    const timeSpan = taskElement.querySelector('.temporal-irony');
+    if (timeSpan) {
+        timeSpan.textContent = formatTemporalIrony(task.createdAt);
+    }
+    
+    // Create philosophical transition effect
+    createTransitionRipple(taskElement, newState);
+    
+    // Remove transition class after animation
+    setTimeout(() => {
+        taskElement.classList.remove('monument-transitioning');
+    }, 800);
+}
+
+// Create Transition Ripple Effect - Visual Poetry of State Change
+function createTransitionRipple(element, newState) {
+    const ripple = document.createElement('div');
+    const stateColors = {
+        'liminal_possibility': '#3b82f6',
+        'purgatory_motion': '#f59e0b', 
+        'hollow_triumph': '#10b981'
+    };
+    
+    ripple.style.cssText = `
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        width: 0;
+        height: 0;
+        background: ${stateColors[newState] || 'var(--hope-accent)'};
+        border-radius: 50%;
+        opacity: 0.3;
+        transform: translate(-50%, -50%);
+        pointer-events: none;
+        animation: ripple-effect 0.8s ease-out forwards;
+        z-index: 1;
+    `;
+    
+    element.style.position = 'relative';
+    element.appendChild(ripple);
+    
+    // Remove ripple after animation with gentle fade
+    setTimeout(() => {
+        if (ripple.parentNode) {
+            ripple.style.opacity = '0';
+            ripple.style.transition = 'opacity 0.2s ease-out';
+            setTimeout(() => {
+                if (ripple.parentNode) {
+                    ripple.parentNode.removeChild(ripple);
+                }
+            }, 200);
+        }
+    }, 800);
 }
 
 // Void Meditation - Managing the Empty State
@@ -413,23 +597,147 @@ function rotatePlaceholder(inputElement) {
     }, 8000);
 }
 
-// State Transition Animation
-function animateStateTransition(taskId, oldState, newState) {
+// Task Dissolution - Return to Digital Dust
+function dissolveTaskWithAnimation(taskId) {
     const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
     if (!taskElement) return;
     
-    // Gentle pulse animation
-    taskElement.style.transform = 'scale(1.02)';
-    taskElement.style.opacity = '0.8';
+    // Add dissolution animation class
+    taskElement.classList.add('monument-dissolving');
     
+    // Philosophical feedback for deletion
+    showPhilosophicalObservation(getRandomCommentary('dissolution'));
+    
+    // Animate dissolution
+    taskElement.style.transform = 'scale(0.95) rotateX(10deg)';
+    taskElement.style.opacity = '0';
+    taskElement.style.filter = 'blur(2px)';
+    taskElement.style.transition = 'all 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94)';
+    
+    // Remove from state and re-render after animation
     setTimeout(() => {
-        taskElement.style.transform = 'scale(1)';
-        taskElement.style.opacity = '1';
-    }, 300);
+        const success = VoidState.dissolveTask(taskId);
+        if (success) {
+            renderAllTasks();
+            updateVoidMeditation();
+        }
+    }, 600);
 }
 
-// These functions are now integrated into VoidState and VoidPersistence
-// Legacy functions removed to maintain void purity
+// State Transition Animation - Smooth Existential Metamorphosis
+function animateStateTransition(taskId, oldState, newState) {
+    // Use the enhanced updateTaskMonument function for sophisticated transitions
+    updateTaskMonument(taskId, newState);
+    
+    // Additional philosophical feedback based on transition type
+    const taskElement = document.querySelector(`[data-task-id="${taskId}"]`);
+    if (!taskElement) return;
+    
+    if (newState === TaskStates.COMPLETED) {
+        // Brief celebration glow for completion - hollow triumph
+        taskElement.style.boxShadow = '0 0 20px rgba(16, 185, 129, 0.4)';
+        setTimeout(() => {
+            taskElement.style.boxShadow = '';
+        }, 1000);
+    } else if (newState === TaskStates.ONGOING) {
+        // Subtle pulsing for ongoing tasks - purgatory motion
+        taskElement.style.animation = 'subtle-pulse 3s ease-in-out infinite';
+    } else if (newState === TaskStates.TODO) {
+        // Reset to liminal possibility
+        taskElement.style.animation = '';
+    }
+}
+
+// Keyboard Shortcuts - Enhanced Accessibility
+function setupKeyboardShortcuts() {
+    document.addEventListener('keydown', (e) => {
+        // Alt + N: Focus on new task input
+        if (e.altKey && e.key === 'n') {
+            e.preventDefault();
+            const taskInput = VoidDOM.getElement('taskInput');
+            if (taskInput) {
+                taskInput.focus();
+                showPhilosophicalObservation("the void awaits your intentions");
+            }
+        }
+        
+        // Alt + C: Clear all completed tasks
+        if (e.altKey && e.key === 'c') {
+            e.preventDefault();
+            const completedTasks = VoidState.tasks.filter(t => t.state === TaskStates.COMPLETED);
+            if (completedTasks.length > 0) {
+                completedTasks.forEach(task => VoidState.dissolveTask(task.id));
+                renderAllTasks();
+                updateVoidMeditation();
+                showPhilosophicalObservation("completed monuments return to digital dust");
+            }
+        }
+        
+        // Escape: Clear philosophical observation
+        if (e.key === 'Escape') {
+            const observation = document.getElementById('cosmicObservation');
+            if (observation && observation.classList.contains('visible')) {
+                observation.classList.remove('visible');
+            }
+        }
+    });
+}
+
+// Preload Animations - Performance Enhancement
+function preloadAnimations() {
+    // Create invisible elements to trigger CSS loading
+    const preloadDiv = document.createElement('div');
+    preloadDiv.style.cssText = `
+        position: absolute;
+        top: -9999px;
+        left: -9999px;
+        opacity: 0;
+        pointer-events: none;
+    `;
+    
+    // Preload monument classes
+    const monumentPreload = document.createElement('div');
+    monumentPreload.className = 'task-monument monument-entering monument-transitioning monument-dissolving';
+    preloadDiv.appendChild(monumentPreload);
+    
+    // Preload ripple effect
+    const ripplePreload = document.createElement('div');
+    ripplePreload.style.animation = 'ripple-effect 0.01s';
+    preloadDiv.appendChild(ripplePreload);
+    
+    document.body.appendChild(preloadDiv);
+    
+    // Remove preload elements after brief delay
+    setTimeout(() => {
+        if (preloadDiv.parentNode) {
+            preloadDiv.parentNode.removeChild(preloadDiv);
+        }
+    }, 100);
+}
+
+// Performance Monitoring - Void Analytics
+function trackPerformance() {
+    if ('performance' in window) {
+        const perfData = performance.getEntriesByType('navigation')[0];
+        if (perfData) {
+            console.log(`🌌 Void manifestation time: ${Math.round(perfData.loadEventEnd - perfData.loadEventStart)}ms`);
+        }
+    }
+}
+
+// Error Boundary - Graceful Void Handling
+window.addEventListener('error', (event) => {
+    console.error('Void disturbance detected:', event.error);
+    showPhilosophicalObservation("even in error, the void finds meaning");
+});
+
+window.addEventListener('unhandledrejection', (event) => {
+    console.error('Promise rejected in the void:', event.reason);
+    showPhilosophicalObservation("promises, like hope, sometimes dissolve into nothing");
+});
 
 // Initialize when the DOM is ready
-document.addEventListener('DOMContentLoaded', initializeApp);
+document.addEventListener('DOMContentLoaded', () => {
+    initializeApp();
+    trackPerformance();
+});

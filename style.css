@@ -162,50 +162,352 @@ body {
     padding-bottom: var(--space-pause);
 }
 
-/* Task Monuments */
+/* Task Monuments - Digital Sculptures of Human Intent */
 .task-monuments {
     display: flex;
     flex-direction: column;
     gap: var(--space-pause);
     min-height: 200px;
+    padding: var(--space-breath);
 }
 
 .task-monument {
-    background: var(--contemplation-gray);
-    border: 1px solid var(--hope-accent);
-    padding: var(--space-pause);
+    background: linear-gradient(135deg, var(--contemplation-gray) 0%, var(--whisper-gray) 100%);
+    border: 1px solid transparent;
+    border-image: linear-gradient(45deg, var(--hope-accent), transparent) 1;
+    padding: var(--space-contemplation);
     cursor: pointer;
     transition: var(--transition-profound);
     position: relative;
     overflow: hidden;
+    backdrop-filter: blur(1px);
+    transform: translateZ(0); /* Hardware acceleration */
+    will-change: transform, opacity, box-shadow;
+    
+    /* Enhanced monument foundation */
+    border-radius: 2px;
+    box-shadow: 
+        0 2px 8px rgba(0, 0, 0, 0.2),
+        inset 0 1px 0 rgba(255, 255, 255, 0.05);
+}
+
+/* Void-bordering typography */
+.task-monument::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(45deg, transparent 49%, var(--hope-accent) 50%, transparent 51%);
+    opacity: 0;
+    transition: var(--transition-gentle);
+    pointer-events: none;
+}
+
+.task-monument:hover::before {
+    opacity: 0.03;
 }
 
 .task-monument:hover {
-    transform: translateY(-2px);
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transform: translateY(-3px) scale(1.01);
+    box-shadow: 
+        0 8px 25px rgba(0, 0, 0, 0.4),
+        0 0 0 1px var(--hope-accent);
+    border-color: var(--hope-accent);
 }
 
+.task-monument:focus {
+    outline: none;
+    transform: translateY(-2px) scale(1.005);
+    box-shadow: 
+        0 6px 20px rgba(0, 0, 0, 0.3),
+        0 0 0 2px var(--hope-accent);
+}
+
+/* Perfect typography that borders on the void */
 .task-content {
-    font-size: 1rem;
-    line-height: 1.4;
-    margin-bottom: var(--space-breath);
+    font-size: 1.1rem;
+    line-height: 1.5;
+    margin-bottom: var(--space-contemplation);
+    color: var(--gentle-white);
+    font-weight: 300;
+    letter-spacing: 0.01em;
+    word-spacing: 0.05em;
+    text-rendering: optimizeLegibility;
+    -webkit-font-smoothing: antialiased;
+    -moz-osx-font-smoothing: grayscale;
+    
+    /* Typography that borders on the void */
+    text-shadow: 0 0 1px rgba(0, 0, 0, 0.8);
+    transition: var(--transition-gentle);
+    position: relative;
+    z-index: 2;
+}
+
+.task-content::selection {
+    background: var(--hope-accent);
+    color: var(--void-black);
+    text-shadow: none;
+}
+
+/* Enhanced content breathing on hover */
+.task-monument:hover .task-content {
+    text-shadow: 0 0 2px rgba(255, 255, 255, 0.1);
+    letter-spacing: 0.015em;
 }
 
 .task-metadata {
     display: flex;
     justify-content: space-between;
     align-items: center;
-    font-size: 0.8rem;
+    font-size: 0.75rem;
     color: var(--futility-accent);
     font-family: var(--font-mono);
+    text-transform: lowercase;
+    letter-spacing: 0.02em;
+    border-top: 1px solid var(--whisper-gray);
+    padding-top: var(--space-breath);
+    margin-top: var(--space-breath);
+    gap: var(--space-breath);
 }
 
 .existential-weight {
-    opacity: 0.7;
+    opacity: 0.6;
+    transition: var(--transition-gentle);
+}
+
+.task-monument:hover .existential-weight {
+    opacity: 0.9;
 }
 
 .temporal-irony {
     font-style: italic;
+    opacity: 0.8;
+}
+
+/* State-specific monument styling */
+.task-monument[data-state="liminal_possibility"] {
+    border-left: 3px solid #3b82f6;
+    background: linear-gradient(135deg, var(--contemplation-gray) 0%, rgba(59, 130, 246, 0.05) 100%);
+}
+
+.task-monument[data-state="purgatory_motion"] {
+    border-left: 3px solid #f59e0b;
+    background: linear-gradient(135deg, var(--contemplation-gray) 0%, rgba(245, 158, 11, 0.05) 100%);
+    animation: subtle-pulse 3s ease-in-out infinite;
+}
+
+.task-monument[data-state="hollow_triumph"] {
+    border-left: 3px solid #10b981;
+    background: linear-gradient(135deg, var(--contemplation-gray) 0%, rgba(16, 185, 129, 0.05) 100%);
+    opacity: 0.85;
+}
+
+/* Smooth state transition animations - Breathing of Digital Existence */
+@keyframes subtle-pulse {
+    0%, 100% { 
+        transform: scale(1);
+        opacity: 1;
+    }
+    50% { 
+        transform: scale(1.002);
+        opacity: 0.95;
+    }
+}
+
+@keyframes monument-birth {
+    0% {
+        opacity: 0;
+        transform: translateY(30px) scale(0.9) rotateX(10deg);
+        filter: blur(2px);
+    }
+    60% {
+        opacity: 0.8;
+        transform: translateY(5px) scale(1.02) rotateX(2deg);
+        filter: blur(0.5px);
+    }
+    100% {
+        opacity: 1;
+        transform: translateY(0) scale(1) rotateX(0deg);
+        filter: blur(0);
+    }
+}
+
+@keyframes monument-transition {
+    0% {
+        transform: scale(1) rotateY(0deg);
+        filter: brightness(1);
+    }
+    25% {
+        transform: scale(1.02) rotateY(2deg);
+        filter: brightness(1.1);
+    }
+    50% {
+        transform: scale(1.05) rotateY(0deg);
+        box-shadow: 0 0 30px var(--hope-accent);
+        filter: brightness(1.2);
+    }
+    75% {
+        transform: scale(1.02) rotateY(-2deg);
+        filter: brightness(1.1);
+    }
+    100% {
+        transform: scale(1) rotateY(0deg);
+        filter: brightness(1);
+    }
+}
+
+@keyframes state-transition-glow {
+    0% {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+    50% {
+        box-shadow: 
+            0 8px 25px rgba(0, 0, 0, 0.4),
+            0 0 20px var(--hope-accent),
+            inset 0 0 20px rgba(255, 255, 255, 0.1);
+    }
+    100% {
+        box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    }
+}
+
+@keyframes void-shimmer {
+    0% {
+        background-position: -200% 0;
+    }
+    100% {
+        background-position: 200% 0;
+    }
+}
+
+.task-monument.monument-entering {
+    animation: monument-birth 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+}
+
+.task-monument.monument-transitioning {
+    animation: 
+        monument-transition 0.8s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+        state-transition-glow 0.8s ease-out;
+}
+
+.task-monument.monument-transitioning::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: linear-gradient(
+        90deg,
+        transparent,
+        rgba(255, 255, 255, 0.1),
+        transparent
+    );
+    background-size: 200% 100%;
+    animation: void-shimmer 0.8s ease-out;
+    pointer-events: none;
+}
+
+/* Existential weight visualization */
+.existential-weight::after {
+    content: '';
+    display: inline-block;
+    width: 20px;
+    height: 2px;
+    background: linear-gradient(to right, transparent, var(--hope-accent));
+    margin-left: var(--space-breath);
+    opacity: var(--weight-opacity, 0.5);
+    transition: var(--transition-gentle);
+}
+
+/* Temporal irony enhancement */
+.temporal-irony::before {
+    content: '⧖ ';
+    opacity: 0.5;
+    font-size: 0.9em;
+}
+
+/* Dissolution Button - Return to Digital Dust */
+.dissolution-button {
+    background: transparent;
+    border: 1px solid var(--contemplation-gray);
+    color: var(--futility-accent);
+    width: 24px;
+    height: 24px;
+    border-radius: 50%;
+    cursor: pointer;
+    font-size: 16px;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: var(--transition-gentle);
+    margin-left: var(--space-breath);
+    opacity: 0.6;
+    font-family: var(--font-mono);
+}
+
+.dissolution-button:hover {
+    background: var(--whisper-gray);
+    border-color: var(--hope-accent);
+    color: var(--gentle-white);
+    opacity: 1;
+    transform: scale(1.1);
+}
+
+.dissolution-button:focus {
+    outline: none;
+    border-color: var(--hope-accent);
+    box-shadow: 0 0 0 2px rgba(107, 114, 128, 0.3);
+}
+
+.dissolution-button:active {
+    transform: scale(0.95);
+    background: var(--contemplation-gray);
+}
+
+/* Ripple effect animation for state transitions */
+@keyframes ripple-effect {
+    0% {
+        width: 0;
+        height: 0;
+        opacity: 0.3;
+    }
+    50% {
+        width: 100px;
+        height: 100px;
+        opacity: 0.1;
+    }
+    100% {
+        width: 200px;
+        height: 200px;
+        opacity: 0;
+    }
+}
+
+@keyframes monument-dissolution {
+    0% {
+        opacity: 1;
+        transform: scale(1) rotateX(0deg);
+        filter: blur(0);
+    }
+    50% {
+        opacity: 0.5;
+        transform: scale(0.98) rotateX(5deg);
+        filter: blur(1px);
+    }
+    100% {
+        opacity: 0;
+        transform: scale(0.95) rotateX(10deg);
+        filter: blur(2px);
+    }
+}
+
+.task-monument.monument-dissolving {
+    animation: monument-dissolution 0.6s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+    pointer-events: none;
 }
 
 /* Void Meditation (Empty State) */
